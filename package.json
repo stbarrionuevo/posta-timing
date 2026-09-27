@@ -1,0 +1,34 @@
+{
+  "name": "postas-timing",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:lan": "vite --host",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "test": "node --test \"src/**/*.test.js\" \"supabase/functions/**/*.test.js\"",
+    "test:db": "node supabase/tests/schema.test.mjs",
+    "check:supabase": "node --env-file=.env scripts/check-supabase.mjs"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.3.1",
+    "@supabase/supabase-js": "^2.112.3",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "oxlint": "^1.75.0",
+    "vite": "^6.4.3"
+  }
+}
