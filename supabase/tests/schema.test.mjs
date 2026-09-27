@@ -238,7 +238,7 @@ reassignAud?.b === sw.Beto && reassignAud.a === sw.Eva ? ok('la reasignación gu
 // --- Auditoría inmutable ---
 console.log('\nAuditoría')
 await expectErr('juez no puede borrar audit_log', 'judge', `delete from audit_log`, /permission denied/)
-try { await su(`delete from audit_log`); fail('audit delete su', 'no falló') } catch (e) { ok('audit_log no se puede borrar ni como dueño') }
+try { await su(`delete from audit_log`); fail('audit delete su', 'no falló') } catch { ok('audit_log no se puede borrar ni como dueño') }
 const aud = (await as('op', `select count(*)::int c from audit_log`)).rows[0].c
 aud === 0 ? ok('operador no ve la auditoría') : fail('audit visible op', aud)
 const audJ = (await as('judge', `select count(*)::int c from audit_log`)).rows[0].c
@@ -266,7 +266,6 @@ pub === 0 ? ok('anónimo no ve evento privado') : fail('anon privado', pub)
 await as('judge', `update events set is_public = true where id = $1`, [ev])
 pub = (await as('anon', `select count(*)::int c from v_team_standings`)).rows[0].c
 pub === 2 ? ok('anónimo ve el marcador del evento público') : fail('anon público', pub)
-const oth = (await as('other', `select count(*)::int c from swimmers where event_id = $1 and false`, [ev])).rows[0].c
 const othAud = (await as('other', `select count(*)::int c from audit_log where event_id = $1`, [ev])).rows[0].c
 othAud === 0 ? ok('otra organización no ve auditoría ajena') : fail('other audit', othAud)
 await expectErr('anónimo no registra pasadas', 'anon', `select record_lap($1, $2, $3, now())`, /permission denied/, [t1.id, sw.Ana, op(12)])

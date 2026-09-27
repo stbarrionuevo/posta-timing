@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - name: Pruebas de la app (reloj, cola, resultados, PDF, permisos de admin-users)
+        run: npm test
+      - name: Pruebas del esquema en Postgres (PGlite)
+        run: npm run test:db
+      - name: Compilación
+        run: npm run build
+        env:
+          # Valores de relleno: solo se verifica que compile.
+          VITE_SUPABASE_URL: https://example.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: ci-placeholder

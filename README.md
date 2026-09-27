@@ -9,7 +9,7 @@ nadador por pasada.
 `../swim-timing` (torneo escolar) es un producto vendido con soporte por 12
 meses y **no se modifica**. Este proyecto es independiente:
 
-- Carpeta y repositorio propios.
+- Carpeta y repositorio propios: https://github.com/stbarrionuevo/posta-timing
 - **Proyecto de Supabase propio.** No correr `supabase/schema.sql` en la base
   del torneo escolar.
 - Se reutilizan patrones de swim-timing copiándolos, no importándolos:
@@ -49,7 +49,8 @@ no duplica la pasada).
 1. En el proyecto de Supabase nuevo, correr `supabase/schema.sql` en el SQL Editor.
 2. Crear el primer usuario (Authentication > Users) y correr `supabase/bootstrap.sql`
    con los datos de la organización.
-3. `.env` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`.
+3. `.env` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` (copiar
+   `.env.example`).
 4. `npm install`, `npm run check:supabase` (verifica el esquema sin mostrar
    credenciales) y `npm run dev`.
 
@@ -89,8 +90,9 @@ del dispositivo del juez.
 - Pantalla siempre encendida (Wake Lock) y vibración al tocar.
 
 Para probar con celulares en la misma red: `npm run dev:lan` y abrir la URL
-"Network" que muestra Vite. Wake Lock necesita https; en http la app funciona
-igual pero la pantalla puede apagarse.
+"Network" que muestra Vite. Wake Lock necesita https: en http la app funciona
+igual pero la pantalla puede apagarse. En eventos reales usar la versión
+publicada (ver "Publicación").
 
 ## Correcciones y auditoría (`#/juez/evento/:id/correcciones`)
 
@@ -165,6 +167,26 @@ El primer administrador de cada organización se sigue creando con
 
 Bases creadas con una versión anterior de `schema.sql`: correr en orden los
 archivos de `supabase/migrations/` que falten.
+
+## Publicación (GitHub Pages, https)
+
+`.github/workflows/deploy.yml` publica en cada push a `main`, solo si pasan
+lint y pruebas. Configuración, una sola vez:
+
+1. GitHub → Settings → Pages → Source: **GitHub Actions**.
+2. GitHub → Settings → Secrets and variables → Actions → New repository
+   secret: `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` (los mismos
+   valores del `.env`). La clave publicable está pensada para ir en el
+   navegador; la de servicio NUNCA va acá.
+3. Push a `main` (o Actions → Deploy → Run workflow). La app queda en
+   https://stbarrionuevo.github.io/posta-timing/
+4. Supabase → Authentication → URL Configuration → Site URL: esa dirección.
+
+Con dominio propio: configurarlo en Pages y crear la variable de Actions
+`BASE_PATH` con valor `/`.
+
+`.github/workflows/ci.yml` corre lint, pruebas y compilación en cada push a
+otras ramas y en cada pull request.
 
 ## Pruebas
 

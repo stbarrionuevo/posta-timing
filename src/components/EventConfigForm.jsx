@@ -7,7 +7,7 @@ const POLICIES = [
   { value: 'tiebreak_only', label: 'Solo para desempatar' },
 ]
 
-export function eventToForm(event) {
+function eventToForm(event) {
   return {
     name: event?.name ?? '',
     venue: event?.venue ?? '',
